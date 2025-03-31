@@ -7,6 +7,7 @@ import github.ablandel.anotheradventure.adventurer.entity.toDTO
 import github.ablandel.anotheradventure.adventurer.exception.AdventurerAlreadyExistException
 import github.ablandel.anotheradventure.adventurer.exception.AdventurerDoesNotExistException
 import github.ablandel.anotheradventure.adventurer.repository.AdventurerRepository
+import github.ablandel.anotheradventure.party.exception.FounderCannotBeDeletedException
 import github.ablandel.anotheradventure.party.exception.PartyDoesNotExistException
 import github.ablandel.anotheradventure.party.repository.PartyRepository
 import github.ablandel.anotheradventure.shared.request.Pagination
@@ -57,6 +58,13 @@ class AdventurerService(
             adventurerRepository.findById(id).orElseThrow {
                 AdventurerDoesNotExistException(id)
             }
+        if (adventurer.party != null) {
+            partyRepository.findById(adventurer.party.id!!).ifPresent {
+                when {
+                    it.founder.id == id -> throw FounderCannotBeDeletedException()
+                }
+            }
+        }
         return adventurerRepository.delete(adventurer)
     }
 

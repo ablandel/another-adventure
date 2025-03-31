@@ -8,9 +8,9 @@ import github.ablandel.anotheradventure.party.dto.PartyDTO
 import github.ablandel.anotheradventure.party.dto.toEntity
 import github.ablandel.anotheradventure.party.entity.Party
 import github.ablandel.anotheradventure.party.entity.toDTO
-import github.ablandel.anotheradventure.party.exception.AdventurerIsAlreadyTheFounderOfAnotherParty
-import github.ablandel.anotheradventure.party.exception.AdventurersAreAlreadyInAnotherParty
-import github.ablandel.anotheradventure.party.exception.FounderMustBeInAdventurerList
+import github.ablandel.anotheradventure.party.exception.AdventurerIsAlreadyTheFounderOfAnotherPartyException
+import github.ablandel.anotheradventure.party.exception.AdventurersAreAlreadyInAnotherPartyException
+import github.ablandel.anotheradventure.party.exception.FounderMustBeInAdventurerListException
 import github.ablandel.anotheradventure.party.exception.PartyAlreadyExistException
 import github.ablandel.anotheradventure.party.exception.PartyDoesNotExistException
 import github.ablandel.anotheradventure.party.repository.PartyRepository
@@ -55,12 +55,12 @@ class PartyService(
                 AdventurerDoesNotExistException(it)
             }
             if (partyRepository.countByFounderId(it) > 0) {
-                throw AdventurerIsAlreadyTheFounderOfAnotherParty()
+                throw AdventurerIsAlreadyTheFounderOfAnotherPartyException()
             }
         }
         val uniqueAdventurerIds = partyDto.adventurerIds.toSet().toMutableList()
         if (!uniqueAdventurerIds.contains(partyDto.founderId)) {
-            throw FounderMustBeInAdventurerList()
+            throw FounderMustBeInAdventurerListException()
         }
         val existingAdventurers =
             adventurerRepository.findInIds(uniqueAdventurerIds.toSet().toList())
@@ -71,7 +71,7 @@ class PartyService(
         }
         val adventurersAlreadyInParties = existingAdventurers.filter { it.party != null }
         if (adventurersAlreadyInParties.isNotEmpty()) {
-            throw AdventurersAreAlreadyInAnotherParty(adventurersAlreadyInParties.map { it.id!! })
+            throw AdventurersAreAlreadyInAnotherPartyException(adventurersAlreadyInParties.map { it.id!! })
         }
         val party = partyDto.toEntity()
         val savedParty = partyRepository.save(party)
@@ -80,11 +80,13 @@ class PartyService(
         return savedParty.toDTO()
     }
 
+    @Transactional
     fun deleteById(id: Long) {
         val party =
             partyRepository.findById(id).orElseThrow {
                 PartyDoesNotExistException(id)
             }
+        party.adventurers.forEach { adventurerRepository.save(it.cloneWithParty(party = null)) }
         return partyRepository.delete(party)
     }
 

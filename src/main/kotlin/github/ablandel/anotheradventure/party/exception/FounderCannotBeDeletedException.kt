@@ -3,9 +3,8 @@ package github.ablandel.anotheradventure.party.exception
 import org.springframework.http.HttpStatus
 import org.springframework.web.server.ResponseStatusException
 
-class AdventurersAreAlreadyInAnotherParty(
-    ids: List<Long>,
-) : ResponseStatusException(
+class FounderCannotBeDeletedException :
+    ResponseStatusException(
         HttpStatus.BAD_REQUEST,
-        "Adventurers with IDs `$ids` are already in another party",
+        "The founder must be in the adventurer list",
     )

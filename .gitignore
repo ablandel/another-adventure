@@ -3,6 +3,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 *.log
+*.jar
 
 ### STS ###
 .apt_generated

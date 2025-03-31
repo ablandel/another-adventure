@@ -6,6 +6,7 @@ import github.ablandel.anotheradventure.adventurer.exception.AdventurerAlreadyEx
 import github.ablandel.anotheradventure.adventurer.exception.AdventurerDoesNotExistException
 import github.ablandel.anotheradventure.adventurer.repository.AdventurerRepository
 import github.ablandel.anotheradventure.party.entity.Party
+import github.ablandel.anotheradventure.party.exception.FounderCannotBeDeletedException
 import github.ablandel.anotheradventure.party.exception.PartyDoesNotExistException
 import github.ablandel.anotheradventure.party.repository.PartyRepository
 import github.ablandel.anotheradventure.shared.request.Pagination
@@ -200,6 +201,7 @@ internal class AdventurerServiceTest(
                 adventurerService.deleteById(1)
             }
             verify(adventurerRepository, never()).delete(any())
+            verify(partyRepository, never()).findById(anyLong())
         }
 
         @Test
@@ -208,6 +210,74 @@ internal class AdventurerServiceTest(
                 adventurerRepository.findById(1),
             ).thenReturn(Optional.of(Adventurer(id = 1, name = "name1")))
             adventurerService.deleteById(1)
+            verify(partyRepository, never()).findById(anyLong())
+        }
+
+        @Test
+        fun `deleteById when the adventurer is not a party founder`() {
+            `when`(
+                adventurerRepository.findById(1),
+            ).thenReturn(
+                Optional.of(
+                    Adventurer(
+                        id = 1,
+                        name = "name1",
+                        party =
+                            Party(
+                                id = 42,
+                                name = "",
+                                founder = Adventurer(name = ""),
+                                adventurers = emptyList(),
+                            ),
+                    ),
+                ),
+            )
+            `when`(partyRepository.findById(42)).thenReturn(
+                Optional.of(
+                    Party(
+                        id = 42,
+                        name = "",
+                        founder = Adventurer(id = 2, name = ""),
+                        adventurers = emptyList(),
+                    ),
+                ),
+            )
+            adventurerService.deleteById(1)
+        }
+
+        @Test
+        fun `deleteById when the adventurer is a party founder`() {
+            `when`(
+                adventurerRepository.findById(1),
+            ).thenReturn(
+                Optional.of(
+                    Adventurer(
+                        id = 1,
+                        name = "name1",
+                        party =
+                            Party(
+                                id = 42,
+                                name = "",
+                                founder = Adventurer(name = ""),
+                                adventurers = emptyList(),
+                            ),
+                    ),
+                ),
+            )
+            `when`(partyRepository.findById(42)).thenReturn(
+                Optional.of(
+                    Party(
+                        id = 42,
+                        name = "",
+                        founder = Adventurer(id = 1, name = ""),
+                        adventurers = emptyList(),
+                    ),
+                ),
+            )
+            assertThrows(FounderCannotBeDeletedException::class.java) {
+                adventurerService.deleteById(1)
+            }
+            verify(adventurerRepository, never()).delete(any())
         }
     }
 

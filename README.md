@@ -1,6 +1,6 @@
 # Another Adventure ⛐𓂃 ོ𓂃ᨒ↟𖠰
 
-Simple project to test Maven + Kotlin + Spring Boot against a database.
+Simple project to test Maven + Kotlin + Karate + Spring Boot against a database.
 
 ### Start the project
 
@@ -28,6 +28,16 @@ The tests can be run using `maven`:
 
 ```shell
 ./mvnw clean test
+```
+
+### Run the integration tests
+
+Integration tests can be run using the [Karate](https://github.com/karatelabs/karate) tool in
+the [integration](./integration) directory. Download the [Karate](https://github.com/karatelabs/karate/releases) `jar`
+and run the following command to run the tests:
+
+```shell
+java -jar karate.jar integration/adventurer.feature integration/party.feature
 ```
 
 ### Docker image build

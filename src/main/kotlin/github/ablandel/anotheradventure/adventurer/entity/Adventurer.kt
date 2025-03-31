@@ -39,7 +39,7 @@ fun Adventurer.toDTO(): AdventurerDTO =
         partyId = party?.id,
     )
 
-fun Adventurer.cloneWithParty(party: Party): Adventurer =
+fun Adventurer.cloneWithParty(party: Party? = null): Adventurer =
     Adventurer(
         id = id,
         name = name,

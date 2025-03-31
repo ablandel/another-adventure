@@ -6,9 +6,9 @@ import github.ablandel.anotheradventure.adventurer.exception.AdventurersDoNotExi
 import github.ablandel.anotheradventure.adventurer.repository.AdventurerRepository
 import github.ablandel.anotheradventure.party.dto.PartyDTO
 import github.ablandel.anotheradventure.party.entity.Party
-import github.ablandel.anotheradventure.party.exception.AdventurerIsAlreadyTheFounderOfAnotherParty
-import github.ablandel.anotheradventure.party.exception.AdventurersAreAlreadyInAnotherParty
-import github.ablandel.anotheradventure.party.exception.FounderMustBeInAdventurerList
+import github.ablandel.anotheradventure.party.exception.AdventurerIsAlreadyTheFounderOfAnotherPartyException
+import github.ablandel.anotheradventure.party.exception.AdventurersAreAlreadyInAnotherPartyException
+import github.ablandel.anotheradventure.party.exception.FounderMustBeInAdventurerListException
 import github.ablandel.anotheradventure.party.exception.PartyAlreadyExistException
 import github.ablandel.anotheradventure.party.exception.PartyDoesNotExistException
 import github.ablandel.anotheradventure.party.repository.PartyRepository
@@ -196,7 +196,7 @@ internal class PartyServiceTest(
             `when`(partyRepository.findByName("name")).thenReturn(Optional.empty())
             `when`(adventurerRepository.findById(2)).thenReturn(Optional.of(Adventurer(id = 2, name = "")))
             `when`(partyRepository.countByFounderId(2)).thenReturn(1)
-            assertThrows(AdventurerIsAlreadyTheFounderOfAnotherParty::class.java) {
+            assertThrows(AdventurerIsAlreadyTheFounderOfAnotherPartyException::class.java) {
                 partyService.create(PartyDTO(name = "name", founderId = 2, adventurerIds = emptyList()))
             }
             verify(partyRepository, never()).save(any())
@@ -208,7 +208,7 @@ internal class PartyServiceTest(
             `when`(partyRepository.findByName("name")).thenReturn(Optional.empty())
             `when`(adventurerRepository.findById(2)).thenReturn(Optional.of(Adventurer(id = 2, name = "")))
             `when`(partyRepository.countByFounderId(2)).thenReturn(0)
-            assertThrows(FounderMustBeInAdventurerList::class.java) {
+            assertThrows(FounderMustBeInAdventurerListException::class.java) {
                 partyService.create(PartyDTO(name = "name", founderId = 2, adventurerIds = emptyList()))
             }
             verify(partyRepository, never()).save(any())
@@ -263,7 +263,7 @@ internal class PartyServiceTest(
                     ),
                 ),
             )
-            assertThrows(AdventurersAreAlreadyInAnotherParty::class.java) {
+            assertThrows(AdventurersAreAlreadyInAnotherPartyException::class.java) {
                 partyService.create(PartyDTO(name = "name", founderId = 2, adventurerIds = listOf(2, 2, 3, 4, 4, 5)))
             }
             verify(partyRepository, never()).save(any())
@@ -328,6 +328,7 @@ internal class PartyServiceTest(
                 partyService.deleteById(1)
             }
             verify(partyRepository, never()).delete(any())
+            verify(adventurerRepository, never()).save(any())
         }
 
         @Test
@@ -344,6 +345,51 @@ internal class PartyServiceTest(
                 ),
             )
             partyService.deleteById(1)
+            verify(adventurerRepository, never()).save(any())
+        }
+
+        @Test
+        fun `deleteById with adventurers`() {
+            `when`(
+                partyRepository.findById(1),
+            ).thenReturn(
+                Optional.of(
+                    Party(
+                        name = "name1",
+                        founder = Adventurer(id = 1, name = "name1"),
+                        adventurers =
+                            listOf(
+                                Adventurer(
+                                    id = 1,
+                                    name = "name1",
+                                ),
+                                Adventurer(
+                                    id = 2,
+                                    name = "name2",
+                                    party =
+                                        Party(
+                                            name = "name4",
+                                            founder = Adventurer(name = "name5"),
+                                            adventurers = emptyList(),
+                                        ),
+                                ),
+                                Adventurer(
+                                    id = 3,
+                                    name = "name3",
+                                    party =
+                                        Party(
+                                            name = "name6",
+                                            founder = Adventurer(name = "name7"),
+                                            adventurers = emptyList(),
+                                        ),
+                                ),
+                            ),
+                    ),
+                ),
+            )
+            partyService.deleteById(1)
+            verify(adventurerRepository, times(1)).save(Adventurer(id = 2, name = "name2"))
+            verify(adventurerRepository, times(1)).save(Adventurer(id = 3, name = "name3"))
         }
     }
 

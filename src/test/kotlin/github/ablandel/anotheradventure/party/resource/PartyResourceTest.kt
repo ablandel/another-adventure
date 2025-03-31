@@ -3,9 +3,9 @@ package github.ablandel.anotheradventure.party.resource
 import github.ablandel.anotheradventure.adventurer.exception.AdventurerDoesNotExistException
 import github.ablandel.anotheradventure.adventurer.exception.AdventurersDoNotExistException
 import github.ablandel.anotheradventure.party.dto.PartyDTO
-import github.ablandel.anotheradventure.party.exception.AdventurerIsAlreadyTheFounderOfAnotherParty
-import github.ablandel.anotheradventure.party.exception.AdventurersAreAlreadyInAnotherParty
-import github.ablandel.anotheradventure.party.exception.FounderMustBeInAdventurerList
+import github.ablandel.anotheradventure.party.exception.AdventurerIsAlreadyTheFounderOfAnotherPartyException
+import github.ablandel.anotheradventure.party.exception.AdventurersAreAlreadyInAnotherPartyException
+import github.ablandel.anotheradventure.party.exception.FounderMustBeInAdventurerListException
 import github.ablandel.anotheradventure.party.exception.PartyAlreadyExistException
 import github.ablandel.anotheradventure.party.exception.PartyDoesNotExistException
 import github.ablandel.anotheradventure.party.service.PartyService
@@ -276,7 +276,7 @@ class PartyResourceTest {
         @Test
         @Throws(Exception::class)
         fun `create when the founder is already the founder of another party`() {
-            `when`(partyService.create(any())).thenThrow(AdventurerIsAlreadyTheFounderOfAnotherParty())
+            `when`(partyService.create(any())).thenThrow(AdventurerIsAlreadyTheFounderOfAnotherPartyException())
             mockMvc
                 .perform(
                     MockMvcRequestBuilders
@@ -298,7 +298,7 @@ class PartyResourceTest {
         @Test
         @Throws(Exception::class)
         fun `create when the founder is not the adventurer list`() {
-            `when`(partyService.create(any())).thenThrow(FounderMustBeInAdventurerList())
+            `when`(partyService.create(any())).thenThrow(FounderMustBeInAdventurerListException())
             mockMvc
                 .perform(
                     MockMvcRequestBuilders
@@ -342,7 +342,7 @@ class PartyResourceTest {
         @Test
         @Throws(Exception::class)
         fun `create when some adventures in the list are already in other parties`() {
-            `when`(partyService.create(any())).thenThrow(AdventurersAreAlreadyInAnotherParty(listOf(2, 3)))
+            `when`(partyService.create(any())).thenThrow(AdventurersAreAlreadyInAnotherPartyException(listOf(2, 3)))
             mockMvc
                 .perform(
                     MockMvcRequestBuilders

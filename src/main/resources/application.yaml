@@ -1,0 +1,29 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api/
+spring:
+  datasource:
+    username: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/postgres
+  jpa:
+    show-sql: false
+    open-in-view: true
+    hibernate:
+      ddl-auto: validate
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-root.yaml
+    drop-first: false
+  docker:
+    compose:
+      enabled: false
+      file: docker-compose.yaml
+logging:
+  file:
+    name: another-adventure.log
+  logback:
+    rollingpolicy:
+      file-name-pattern: another-adventure-%d{yyyy-MM-dd}.%i.log
+      max-file-size: 100KB
+      max-history: 5

@@ -1,0 +1,298 @@
+type: collection.insomnia.rest/5.0
+name: Scratch Pad
+meta:
+  id: wrk_scratchpad
+  created: 1742661806946
+  modified: 1742661806946
+collection:
+  - name: Adventurers
+    meta:
+      id: fld_68dfcac2317c431391cd43117a808ca7
+      created: 1712175605724
+      modified: 1742662020053
+      sortKey: -1712175605724
+    children:
+      - url: "{{ _.baseUrl }}/v1/adventurers"
+        name: Find with pagination
+        meta:
+          id: req_ad34053937024da290d8fbdf20cedd8c
+          created: 1712077189276
+          modified: 1742662035643
+          isPrivate: false
+          sortKey: -1712175618851
+        method: GET
+        parameters:
+          - id: pair_2a2244bb9e6146fcba70c3e39f8353c5
+            name: offset
+            value: "0"
+          - id: pair_64cba030722f48bda7ac23eb69f1ea20
+            name: limit
+            value: "20"
+          - id: pair_114adee07638498598f491caa0aff4f0
+            name: cursor
+            value: "20"
+            disabled: true
+        headers:
+          - name: User-Agent
+            value: insomnia/8.5.1
+            id: pair_71e5543b2c9545028dcd3a66cf191b56
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl }}/v1/adventurers/1"
+        name: Find by ID
+        meta:
+          id: req_8755e1c7d3a348f3af9b625396aaf5e4
+          created: 1712346778732
+          modified: 1742662047693
+          isPrivate: false
+          sortKey: -1707802201960.5
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/8.5.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl }}/v1/adventurers/1"
+        name: Delete by ID
+        meta:
+          id: req_2d8b28c5d4104aea8ec079d615f8cefa
+          created: 1712347626356
+          modified: 1742662049932
+          isPrivate: false
+          sortKey: -1705615493515.25
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/8.5.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl }}/v1/adventurers"
+        name: Create
+        meta:
+          id: req_be27ce4b7ceb4728b27d16f1ac9d5b8d
+          created: 1712500677614
+          modified: 1743191501042
+          isPrivate: false
+          sortKey: -1705615493415.25
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "New Adventurer"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/8.5.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl }}/v1/adventurers/count"
+        name: Count
+        meta:
+          id: req_554c6fc003004c1f973972ab630ac013
+          created: 1712506636769
+          modified: 1742662042603
+          isPrivate: false
+          sortKey: -1711082264628.375
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/8.5.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: Parties
+    meta:
+      id: fld_8c921185c419464ea52bbfb36d2b55ad
+      created: 1712176349287
+      modified: 1742662027079
+      sortKey: -1712175605674
+    children:
+      - url: "{{ _.baseUrl }}/v1/parties"
+        name: Find with pagination
+        meta:
+          id: req_06ee4bab7a4b47c7979a4da9c46ce0be
+          created: 1712176349289
+          modified: 1742665681993
+          isPrivate: false
+          sortKey: -1712175618851
+        method: GET
+        parameters:
+          - id: pair_5c572534f87543a7b7daefcd0b06a22f
+            name: offset
+            value: "0"
+          - id: pair_48ee66781cd34f46a1d1cacbd75aed53
+            name: limit
+            value: "20"
+          - id: pair_02bb3deec2f14eacbe3b3a4da1bb5827
+            name: cursor
+            value: "0"
+            disabled: false
+        headers:
+          - name: User-Agent
+            value: insomnia/8.5.1
+            id: pair_5c378f21948b4b6491f896583efb3807
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl }}/v1/parties/1"
+        name: Find by ID
+        meta:
+          id: req_9b85369e4ea1452e8fb653ac0309928d
+          created: 1712347388553
+          modified: 1742673392699
+          isPrivate: false
+          sortKey: -1709988910405.75
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/8.5.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl }}/v1/parties/1"
+        name: Delete by ID
+        meta:
+          id: req_87245797257b4ec48bcdf47b7db791d7
+          created: 1712347705479
+          modified: 1742673967286
+          isPrivate: false
+          sortKey: -1708895556183.125
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/8.5.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl }}/v1/parties"
+        name: Create
+        meta:
+          id: req_2b7cf93f843d4212a1ba00fab28478eb
+          created: 1712348713511
+          modified: 1743191539626
+          isPrivate: false
+          sortKey: -1708348879071.8125
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"name": "Awesome Party!",
+            	"founderId": 1,
+            	"adventurerIds": [1]
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/8.5.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.baseUrl }}/v1/parties/count"
+        name: Count
+        meta:
+          id: req_1df5577613a642ebb7c968c16ce2cce8
+          created: 1712506646971
+          modified: 1742665686888
+          isPrivate: false
+          sortKey: -1711628941739.6875
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/8.5.1
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - url: "{{ _.baseUrl }}/actuator/health"
+    name: Actuator (health)
+    meta:
+      id: req_e39b20302ca94b27960e8499e4883fc1
+      created: 1703428785070
+      modified: 1714644972310
+      isPrivate: false
+      sortKey: -1703428785070
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/8.5.1
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1742661814647
+    modified: 1742661814647
+environments:
+  name: Base Environment
+  meta:
+    id: env_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1742661814528
+    modified: 1742662086454
+    isPrivate: false
+  data:
+    baseUrl: http://localhost:8080/api

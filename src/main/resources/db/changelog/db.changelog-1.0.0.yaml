@@ -1,0 +1,111 @@
+databaseChangeLog:
+  - changeSet:
+      id: "2025-01-07 - adventurer table creation"
+      author: "ablandel"
+      changes:
+        - createTable:
+            tableName: adventurer
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: adventurer_pkey
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(40)
+              - column:
+                  name: party_id
+                  type: BIGINT
+                  constraints:
+                    foreignKey: true
+        - createIndex:
+            columns:
+              - column:
+                  name: name
+            indexName: adventurer_name_index
+            tableName: adventurer
+            unique: true
+  - changeSet:
+      id: "2025-01-07 - party table creation"
+      author: "ablandel"
+      changes:
+        - createTable:
+            tableName: party
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: party_pkey
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+              - column:
+                  constraints:
+                    nullable: false
+                  name: created_at
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: updated_at
+                  type: DATETIME
+              - column:
+                  constraints:
+                    nullable: false
+                  name: name
+                  type: VARCHAR(60)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: founder_id
+                  type: BIGINT
+        - createIndex:
+            columns:
+              - column:
+                  name: name
+            indexName: party_name_index
+            tableName: party
+            unique: true
+  - changeSet:
+      id: "2025-01-07 - add table constraints"
+      author: "ablandel"
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: party_id
+            baseTableName: adventurer
+            constraintName: fk_party_id
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: SET NULL
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: party
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: founder_id
+            baseTableName: party
+            constraintName: fk_founder_id
+            deferrable: false
+            initiallyDeferred: false
+            onDelete: CASCADE
+            onUpdate: NO ACTION
+            referencedColumnNames: id
+            referencedTableName: adventurer
+            validate: true

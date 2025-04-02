@@ -17,7 +17,9 @@ services:
     image: another-adventure:local
     restart: always
     depends_on:
-      - postgresql
+      postgresql:
+        condition: service_healthy
+
     environment:
       spring.datasource.url: jdbc:postgresql://postgresql:5432/postgres
     ports:

@@ -1,10 +1,10 @@
 # Another Adventure ⛐𓂃 ོ𓂃ᨒ↟𖠰
 
-Simple project to test Maven + Kotlin + Karate + Spring Boot against a database.
+Simple project to test Maven + Kotlin + Karate + GraalVM native images + Spring Boot against a database.
 
 ### Start the project
 
-A `docker-compose.yaml` file is provided to easier the developments. Another `PostgreSQL` instance can be used; in this
+A `compose.yaml` file is provided to easier the developments. Another `PostgreSQL` instance can be used; in this
 case the `application.yaml` may have to be updated.
 
 ```shell
@@ -37,12 +37,12 @@ the [integration](./integration) directory. Download the [Karate](https://github
 and run the following command to run the tests:
 
 ```shell
-java -jar karate.jar integration/adventurer.feature integration/party.feature
+java -jar karate.jar integration
 ```
 
 ### Docker image build
 
-A `local.docker-compose.yaml` file is provided to easier the test using Docker images. For the moment, the Docker image
+A `local.compose.yaml` file is provided to easier the test using Docker images. For the moment, the Docker image
 are not pushed and need to be locally built.
 
 #### Build the image
@@ -51,8 +51,14 @@ are not pushed and need to be locally built.
 docker build -t another-adventure:local .
 ```
 
+#### Build the native image
+
+```shell
+./mvnw -Pnative -Dspring-boot.build-image.imageName=another-adventure:local spring-boot:build-image
+```
+
 #### Start the docker compose
 
 ```shell
-docker compose -f local.docker-compose.yaml up
+docker compose -f local.compose.yaml up
 ```

@@ -19,7 +19,6 @@ services:
     depends_on:
       postgresql:
         condition: service_healthy
-
     environment:
       spring.datasource.url: jdbc:postgresql://postgresql:5432/postgres
     ports:

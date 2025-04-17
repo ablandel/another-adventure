@@ -12,7 +12,7 @@
 	<artifactId>another-adventure</artifactId>
 	<version>1.0.0</version>
 	<name>another-adventure</name>
-	<description>Simple project to test Maven + Kotlin + Spring Boot against a database.</description>
+	<description>Simple project to test Maven + Kotlin + Karate + GraalVM native images + Spring Boot against a database.</description>
 	<url/>
 	<licenses>
 		<license/>
